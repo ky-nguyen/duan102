@@ -16,6 +16,6 @@ services:
     environment:
       - POSTGRES_DB=test_101
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=root
-    container_name: postgres_dbv
+      - POSTGRES_PASSWORD=12345
+    container_name: postgres_web_django
 
