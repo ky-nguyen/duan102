@@ -3,7 +3,7 @@ from itertools import product
 from django.shortcuts import render, redirect, get_object_or_404
 
 from carts.models import CartItem
-from store.models import Product
+from store.models import Product, Variation
 from .models import  Cart, CartItem
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -21,12 +21,22 @@ def _cart_id(request):
 
 #TODO: Add cart 
 def add_cart(request, product_id):
-    color = request.GET['color']
-    # size = request.GET['size']
-    return HttpResponse(color)
-    exit()
-    
     product = Product.objects.get(id=product_id) #TODO: get the product
+    product_variation = []
+    if request.method == 'POST':
+        for item in request.POST:
+            key = item
+            value = request.POST[key]
+            
+            try:
+                variation = Variation.objects.get(product=product,variation_category__iexact=key, variation_value__iexact=value)
+                product_variation.append(variation)
+            except:
+                pass
+   
+    # size = request.GET['size']
+   
+    
     try:
         cart = Cart.objects.get(cart_id=_cart_id(request))#TODO: get the cart using cart_id present in the sessions
     except Cart.DoesNotExist:
